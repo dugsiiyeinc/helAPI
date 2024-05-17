@@ -43,7 +43,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 
 // Use quote routes
-app.use("/api/Quote", GetQuoteRoutes);
+app.use("/api/quote", GetQuoteRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {
