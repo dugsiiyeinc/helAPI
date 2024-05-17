@@ -18,3 +18,12 @@ model User {
   email     String   @unique
   password  String
 }
+
+model Quote {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  quote     String   
+  author    String   
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
