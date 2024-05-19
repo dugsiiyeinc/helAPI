@@ -9,6 +9,7 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import { nodeEnv, port } from "./config/initialConfig.js";
 import authRoutes from "./routes/authRoutes.js";
+import quoteRoutes from "./routes/quoteRoutes.js";
 
 // Initializing the app
 const app = express();
@@ -40,6 +41,9 @@ app.use(express.json());
 
 // Use authentication routes
 app.use("/api/auth", authRoutes);
+
+// Use quote routes
+app.use("/api/quote", quoteRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {
