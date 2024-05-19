@@ -4,7 +4,7 @@ import {
   getAllQuotes,
   getQuoteById,
   searchQuotes,
-} from "../controllers/getQuoteControllers.js";
+} from "../controllers/quoteControllers.js";
 
 // Create a new router instance
 const router = express.Router();

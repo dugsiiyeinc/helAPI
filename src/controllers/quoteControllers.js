@@ -28,24 +28,36 @@ export async function getQuoteById(req, res) {
 }
 // Handle get for  multiple-for-search-query
 export async function searchQuotes(req, res) {
-  const { query } = req.query;
+  const { author, quote } = req.query;
 
-   // Validate query parameter
-   if (!query || typeof query !== 'string' || query.trim() === '') {
-    return res.status(400).json({ message: "Please enter a valid search term." });
+  // Validate query parameters
+  if (
+    (!author || typeof author !== "string" || author.trim() === "") &&
+    (!quote || typeof quote !== "string" || quote.trim() === "")
+  ) {
+    return res
+      .status(400)
+      .json({ message: "Please enter a valid search term." });
   }
 
   try {
-    const quotes = await prisma.quote.findMany({
-      where: {
-        OR: [
-          { quote: { contains: query, mode: "insensitive" } },
-          { author: { contains: query, mode: "insensitive" } },
-          { description: { contains: query, mode: "insensitive" } },
-        ],
-      },
-    });
-    if (quotes.length > 0) {
+    let quotes;
+
+    if (author) {
+      quotes = await prisma.quote.findMany({
+        where: {
+          author: { contains: author, mode: "insensitive" },
+        },
+      });
+    } else if (quote) {
+      quotes = await prisma.quote.findMany({
+        where: {
+          quote: { contains: quote, mode: "insensitive" },
+        },
+      });
+    }
+
+    if (quotes && quotes.length > 0) {
       res.status(200).json(quotes);
     } else {
       res
@@ -54,12 +66,9 @@ export async function searchQuotes(req, res) {
     }
   } catch (error) {
     console.error("Search Quotes Error:", error);
-    res
-      .status(500)
-      .json({
-        message: "Server Error, Please try again later.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Server Error, Please try again later.",
+      error: error.message,
+    });
   }
 }
-
