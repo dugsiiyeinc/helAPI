@@ -1,13 +1,10 @@
 // Import required modules and configuration
 import express from "express";
-import { loginUser, registerUser } from "../controllers/authController.js";
-import { validateUserLogin, validateUserRegister } from "../middlewares/validators/authValidator.js";
+import { loginUser } from "../controllers/authController.js";
+import { validateUserLogin } from "../middlewares/validators/authValidator.js";
 
 // Create a new router instance
 const router = express.Router();
-
-// Register route with input validation followed by the registration controller
-router.post("/register", validateUserRegister, registerUser);
 
 // Login route with input validation followed by the login controller
 router.post("/login", validateUserLogin, loginUser);
