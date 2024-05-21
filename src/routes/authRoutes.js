@@ -6,9 +6,6 @@ import { validateUserLogin, validateUserRegister } from "../middlewares/validato
 // Create a new router instance
 const router = express.Router();
 
-// Register route with input validation followed by the registration controller
-router.post("/register", validateUserRegister, registerUser);
-
 // Login route with input validation followed by the login controller
 router.post("/login", validateUserLogin, loginUser);
 

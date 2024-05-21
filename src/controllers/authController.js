@@ -1,7 +1,7 @@
-import prisma from "../../prisma/client.js";
 import jwt from "jsonwebtoken";
+import prisma from "../../prisma/client.js";
 import { jwtSecret } from "../config/initialConfig.js";
-import { hashPassword, comparePassword } from "../utils/passwordUtils.js";
+import { comparePassword } from "../utils/passwordUtils.js";
 
 // Handles user login
 export async function loginUser(req, res) {
