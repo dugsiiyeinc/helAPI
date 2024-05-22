@@ -82,12 +82,45 @@ export const updatedQuote = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: 'Unexpected error while updating' });
   }
 
-  // Respond with success message
+  // Respond with success message and status 200 OK
   return res.status(200).json({
     success: true,
     error: null,
     data: {
       message: 'Updated successfully',
+    },
+  });
+});
+
+// Delete quote by ID
+export const deleteQuote = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  // Validate the ID
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Please enter a valid id' });
+  }
+
+  // Check if the quote exists
+  const isQuoteExists = await prisma.quote.findUnique({
+    where: { id },
+  });
+
+  if (!isQuoteExists) {
+    return res.status(404).json({ message: 'Quote not found' });
+  }
+
+  // Delete the quote
+  await prisma.quote.delete({
+    where: { id },
+  });
+
+  // Respond with success message and status 200 OK
+  return res.status(200).json({
+    success: true,
+    error: null,
+    data: {
+      message: 'Deleted successfully',
     },
   });
 });
