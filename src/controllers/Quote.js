@@ -1,5 +1,7 @@
 import prisma from "../../prisma/client.js";
 import Joi from "joi";
+import asyncHandler from "express-async-handler";
+import { ObjectId } from "mongodb";
 
 // Define a schema for input validation
 const quoteSchema = Joi.object({
@@ -40,3 +42,52 @@ export const registerQuote = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+// Update quote unique Id
+export const updatedQuote = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { quote, author, description } = req.body;
+
+  // Validate the input data
+  const { error } = quoteSchema.validate({ quote, author, description });
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+
+  // Validate the ID
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Please enter a valid id' });
+  }
+
+  // Check if the quote exists
+  const isQuoteExists = await prisma.quote.findUnique({
+    where: { id },
+  });
+
+  if (!isQuoteExists) {
+    return res.status(404).json({ message: 'Quote not found' });
+  }
+
+  // Update the quote
+  const updatedQuote = await prisma.quote.update({
+    data: {
+      quote,
+      author,
+      description,
+    },
+    where: { id },
+  });
+
+  if (!updatedQuote) {
+    return res.status(400).json({ message: 'Unexpected error while updating' });
+  }
+
+  // Respond with success message
+  return res.status(200).json({
+    success: true,
+    error: null,
+    data: {
+      message: 'Updated successfully',
+    },
+  });
+});
