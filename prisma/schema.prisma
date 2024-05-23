@@ -14,10 +14,10 @@ model User {
 }
 
 model Quote {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  quote       String   
-  author      String   
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  quote     String   
+  author    String   
   description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
 }

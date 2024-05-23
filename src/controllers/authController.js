@@ -1,31 +1,7 @@
-import prisma from "../../prisma/client.js";
 import jwt from "jsonwebtoken";
+import prisma from "../../prisma/client.js";
 import { jwtSecret } from "../config/initialConfig.js";
-import { hashPassword, comparePassword } from "../utils/passwordUtils.js";
-
-// Handles new user registration
-export async function registerUser(req, res) {
-  const { email, password } = req.body; // Extract email and password from request body
-
-  try {
-    // Check if a user with the given email already exists
-    let user = await prisma.user.findUnique({ where: { email } });
-    if (user) {
-      return res.status(400).json({ message: "User already exists" });
-    }
-    // Hash the password before saving it
-    const hashedPassword = await hashPassword(password);
-    // Create a new user instance and save it to the database
-    user = await prisma.user.create({
-      data: { email, password: hashedPassword },
-    });
-    // Respond with the created user
-    res.status(201).json({ message: "User created successfully" });
-  } catch (error) {
-    // Handle any errors that occur during the registration process
-    res.status(500).json({ message: "Server Error" });
-  }
-}
+import { comparePassword } from "../utils/passwordUtils.js";
 
 // Handles user login
 export async function loginUser(req, res) {
