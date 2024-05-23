@@ -5,9 +5,14 @@ import {
   getQuoteById,
   searchQuotes,
 } from "../controllers/quoteControllers.js";
+import { deleteQuote, registerQuote, updatedQuote } from "../controllers/Quote.js";
 
 // Create a new router instance
 const router = express.Router();
+
+router.post("/register", registerQuote)
+router.put("/update/:id", updatedQuote)
+router.delete("/delete/:id", deleteQuote);
 
 // Route for fetching all quotes
 router.get("/allQuotes", getAllQuotes);

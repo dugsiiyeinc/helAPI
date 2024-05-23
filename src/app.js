@@ -42,6 +42,9 @@ app.use(express.json());
 // Use authentication routes
 app.use("/api/auth", authRoutes);
 
+//Use quote routes
+app.use("/api/quote", quote);
+
 // Use quote routes
 app.use("/api/quote", quoteRoutes);
 
